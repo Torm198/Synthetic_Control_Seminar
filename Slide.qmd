@@ -1,0 +1,521 @@
+---
+title: "Controle Sintético"
+authors: "Gabriel T. Alves,          Felipe,        Emerson A. Rivera"
+
+
+institute: "Instituto de Matemática, Estatística e Computação Científica (IMECC), </br> Universidade Estadual de Campinas (UNICAMP)."
+toc: true
+toc-depth: 1
+toc-title: "Conteúdo"
+knitr:
+    opts_chunk: 
+      fig.align: 'center'
+execute:
+    message: false
+    warning: false
+format:
+    revealjs:
+        slide-number: true
+        show-slide-number: print
+        self-contained: false
+        chalkboard: true
+        width: 1600
+        height: 900
+        theme: [default, styles.scss]
+        incremental: false
+        code-fold: true
+        logo: "imagens/imecc.png"
+        footer: "   ME920/MI628 - Inferência Causal "
+        highlight-style: "a11y"
+        title-slide-attributes:
+            data-background-image: "imagens/unicamp.png"
+            data-background-size: 20%
+            data-background-position: 99% 5%
+            data-background-opacity: "1"
+---
+# Controle Sintético: Introdução
+
+## Introdução
+
+_ Em muitas situações queremos avaliar o efeito de um acontecimento em unidades de grupos agregados (i.e. cidades, estados, entidades) ao longo do tempo;
+
+- Com o métodos de matching é possível avaliar impacto da intervenção comparando com unidades de controle não afetadas;
+
+- Se destaca por precisar apenas de dados agregados, que geralmente são de fácil acesso;
+
+- Contudo, a definição do grupo de controle pode ser arbitrária;
+
+
+# Controle Sintético: Modelo
+
+## Modelo
+
+
+- Conta-se $J+1$ Unidades observadas em $T$ periodos.
+   - A primeira unidade sofre intervenção
+   - Donor pool, potenciais  controles, é o conjunto das unidades $2$ a $J+1$
+- A intervenção ocorre a partir de $T_0$ tal que $1 \leq T_0\leq T$ e seus efeitos podem se propagar de $T_0+1$ a $T$.
+
+- $Y_{it}^N:$ Resultados potenciais da unidade $i$ no período $t$ (*sem intervenção*)
+
+- $Y_{it}^{I}:$ Resultados potenciais da unidade $i$ nos períodos $t$ posteriores à exposição de $i$ à intervenção.
+
+- A intervenção não afeta $Y$ antes da implementação e os $Y$ não-tratadas não são impactados pela intervenção.
+
+## Modelo
+
+
+- Sejam:
+  - $\alpha_{it}=Y_{it}^I-Y_{it}^{N}$ o efeito da intervenção na unidade $i$ em $t$
+  - $D_{it}=1$, se $i=1$ e $t>T_0$, e $D_{it}=0$, caso contrário
+  
+- Considere que o resultado observado para uma unidade $i$ em $t$ é
+
+
+$$Y_{it}=Y_{it}^N + \alpha_{it}D_{it}$${#eq-1}
+
+- Nosso objetivo é estimar $\alpha_{1t}=Y_{1t}^I-Y_{1t}^N, \forall t>T_0$
+
+## Modelo
+
+- Suponha que a equação de $Y_{it}^N$ seja dada pelo modelo de fatores 
+
+
+
+$$Y_{it}^N=\delta_t+\theta_t Z_i + \lambda_t \mu_i + \varepsilon_{it}$${#eq-2}
+
+
+
+  - $\delta_t$: é um fator comum no tempo não observado (comum entre as unidades)
+  - $Z_i$: é o vetor de  covariáveis observadas (não-afeladas pelo tratamento)  
+  - $\lambda_t$: é um vetor de fatores comuns não-observados
+  - $\mu_i$: é um vetor de fatores específicos 
+  - $\varepsilon_{it}$:  representa choques transitórios.
+- $\lambda_t \mu_i$ permite que efeitos fixos variem no tempo (mudanças temporárias), permitindo respostas heterogêneas para fatores não-observados multiplos.
+
+
+
+## Modelo 
+
+-  Considere um vetor de pesos $W=(W_1,W_2,...,W_{J+1})$ em que $W_j\geq 0$, $\forall j$ e que $\sum_{j=2}^{J+1}W_j=1$. cada $W$ representa um controle sintético (media ponderada das regiões) e o resultado potencial de cada controle sintético é:
+$$\sum_{j=2}^{J+1} W_jY_{jt}^N=\delta_t+\theta_t\sum_{j=2}^{J+1} W_jZ_j + \lambda_t\sum_{j=2}^{J+1} W_j\mu_j+ \sum_{j=2}^{J+1} W_j\varepsilon_{jt}$${#eq-3}
+
+
+- Assim, tem-se que, subtraindo as equações (para $i=1$),
+
+
+$$
+\begin{align}
+    Y_{1t}^N-\sum_{j=2}^{J+1} W_jY_{jt}^N & =\theta_t \left [ Z_1-\sum_{j=2}^{J+1} W_jZ_j \right ]+ \lambda_t \left[ \mu_1-\sum_{j=2}^{J+1} W_j\mu_j \right ] \\
+        & + \sum_{j=2}^{J+1} W_j\left(\varepsilon_{1t}-\varepsilon_{jt} \right )
+\end{align}
+$${#eq-4}
+
+
+
+## Modelo 
+
+- denotemos por $P$ os siguintes vetores pré-tratamento: 
+  - $Y_i^P:$ vetor $T_0 \times 1$ com o t-ésimo elemento de $Y_{it}$
+  - $\varepsilon^P:$ vetor $T_0 \times 1$ com o t-ésimo elemento de $\varepsilon_{it}$
+  - $\theta^P:$ vetor $T_0 \times r$ com o t-ésima linha $\theta_t$ 
+  - $\lambda^P:$ vetor $T_0 \times f$ com o t-ésima linha $\lambda_t$
+  
+
+- Obtemos da equação aplicada ao período pre-tratamento
+
+$$
+\begin{align}
+   Y_{1}^P-\sum_{j=2}^{J+1} W_jY_{j}^P & =\theta^P \left [ Z_1-\sum_{j=2}^{J+1} W_jZ_j \right ]+ \lambda^P \left[ \mu_1-\sum_{j=2}^{J+1} W_j\mu_j \right ] \\
+        & + \left(\varepsilon_1^{P}- \sum_{j=2}^{J+1} W_j \varepsilon_{j}^P\right )
+\end{align}
+$${#eq-5}
+
+
+
+## Modelo
+
+- Suponha agora que exista $W^*=(W_1^*,W_2^*,...,W_{J+1}^*)$ tal que 
+
+<div style="font-size: 80%;">
+\begin{align}
+\sum_{j=2}^{J+1}W_j^* Y_{j1}&=Y_{11}\\
+\sum_{j=2}^{J+1}W_j^* Y_{j2}&=Y_{12}\\
+.&\\
+.&\\
+.&\\
+\sum_{j=2}^{J+1}W_j^* Y_{jT_0}&=Y_{1T_0}\\
+\sum_{j=2}^{J+1}W_j^* Z_{j}&=Z_{1}\\
+
+\end{align}
+
+</div>
+
+## Modelo
+
+- Assim, o ajuste do contrafactual pode ser reduzido a 
+
+$$Y_{1j}^N-\sum W_j^* Y_{jt}^N=R_{1t}+R_{2t}+R_{3t}$$
+
+- Onde 
+
+<div style="font-size: 80%;">
+\begin{align}
+R_{1t}&= \lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1}\\
+R_{2t}&= -\lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1} \lambda^{{P}^T}  \varepsilon_1^P\\
+R_{1t}&= \left( \varepsilon_1^P-\sum_{j=2}^{J+2} W_j \varepsilon_j^P \right)\\
+\end{align}
+
+</div>
+## Modelo
+
+- Considere que $E(R_{2t})=E(R_{3t})=0, \forall t > T_0$
+- E para $R_{1t}$ mostra-se que:
+
+<div style="font-size: 70%;">
+$$
+E|R_{1t}| \leq C(p)^{\frac{1}{p}}\left( \frac{\bar{\lambda}^2F}{\xi}\right)J^{\frac{1}{p}}max \left\{ \frac{(\bar{m}_p)^{\frac{1}{p}}}{T_0^{1-\frac{1}{p}}},\frac{\bar{\sigma}}{\sqrt{T_0}}  \right\}
+$${#eq-6}
+</div>
+
+- em que 
+  - $C(p)$ é o p-ésimo momento central de $(X-1)$, sendo $X \sim Poisson(1)$
+  - $\left( \frac{\bar{\lambda}^2F}{\xi}\right)$ é o limite inferior dos autovalores de $\frac{1}{M}\sum \lambda_t^T \lambda_t$
+  - $\bar{m}_p$ é a média do p-ésimo momento de $\varepsilon_{jt}$
+  - $\bar{\sigma}$ é o $max(\sigma_j^2)$, em que $\sigma_j^2=E|\varepsilon_{jt}|^2$. 
+  - para mais detalhes ver **Appendix B** de [Alberto et. al. 2010](https://www.tandfonline.com/doi/epdf/10.1198/jasa.2009.ap08746?needAccess=true)
+
+
+## Modelo 
+
+
+- A @eq-6 implica que o viés do estimador $E(R_{1t})$ pode ser limitado por uma função que vai para zero à medida que o número de períodos ($T_0$) de pré-tratamento aumenta.
+
+- Conforme $T_0$ cresce, o matching nos resultados pré-intervenção ajuda a controlar fatores não-observados e a heterogeneidade dos efeitos observados sobre $Y$.
+
+
+- As unidades parecidas nos determinantes observados e não observados de $Y$ devem produzir trajetórias similares às de $Y$ em instantes posteriores a $T_0$. A diferença entre as trajetórias em $t> T_0$ é efeito da intervenção
+
+$$\hat{\alpha_{1t}}=Y_{1t}-\sum_{j+2}^{J+1}W_j^* Y_{jt} ~ t \in \{ T_0+1, T_0+2,...,T\}$$
+
+## Modelo
+
+- As condições para $W*$ esablecidas valem na igualdade se $(Y_{11}, Y_{12},...,Y_{1T_0}, Z_1^T)$ 
+
+  pertence ao cone convexo gerado por 
+  ${(Y_{21}, Y_{22},...,Y_{2T_0}, Z_2^T),..., (Y_{(J+1)1},(Y_{(J+1)2},...,Y_{(J+1)T_0}, Z_{(J+1)}^T)}$
+- O suporte deve ser parecido
+- $W^*$ satisfaz as condições aproximadamente
+- viés de interpolação entre regiões com características diferentes
+
+
+
+
+# Controle Sintético: Implementação
+
+## Implementação das funções
+
+Busca-se $W^*$ que minimize $\lVert X_1 - X_0W \rVert$. Para isso, minimizamos a função:
+
+$$\lVert X_1 - X_0W \rVert = \sqrt{(X_1 - X_0W)'V(X_1 - X_0W)}$$
+
+A matriz simétrica e semipositiva definida $V$ é encontrada de forma a minimizar:
+
+$$
+arg min_{V\in\mathcal{V}}(Z_1 - Z_0W^*(V))'(Z_1 - Z_0W^*(V))
+$$
+onde $\mathcal{V}$ é o conjunto com todas as matrizes diagonais positivas definidas. ()
+
+## Implementação das funções
+
+A função para obtenção de $V$ é dada por:
+
+```{r, echo=TRUE}
+func.V <- function(SV1, X0, X1, Z0, Z1) {
+  V <- diag(x = as.numeric(abs(SV1)/sum(abs(SV1))), 
+            nrow = length(SV1), ncol = length(SV1))
+  H <- t(X0) %*% V %*% X0
+  c <- -1 * c(t(X1) %*% V %*% X0)
+  A <- t(rep(1, length(c)))
+  b <- 1
+  l <- rep(0, length(c))
+  u <- rep(1, length(c))
+  r <- 0
+  
+  res <- ipop(c = c, H = H, A = A, b = b, l = l, u = u, r = r)
+  W <- as.matrix(primal(res))
+  sol.V <- as.numeric(t(Z1 - Z0 %*% W) %*% (Z1 - Z0 %*% W))
+  return(sol.V)
+}
+```
+
+
+E a função para obtenção dos controles sintéticos é dada por 
+
+```{r, echo=TRUE}
+syntetic.control <- function(X0, X1, Z0, Z1) {
+  big.dataframe <- cbind(X0, X1)
+  divisor <- sqrt(apply(big.dataframe, 1, var))
+  scaled.matrix <- t(t(big.dataframe) %*% 
+                       (1/(divisor) * diag(rep(dim(big.dataframe)[1], 1))))
+  X0 <- scaled.matrix[, c(1:(dim(X0)[2]))]
+  X1 <- scaled.matrix[, dim(scaled.matrix)[2]]
+  SV1 <- rep(1/dim(X0)[1], dim(X0)[1])
+  V.optim <- optimx::optimx(par = SV1, fn = func.V,
+                            X0 = X0, X1 = X1, Z0 = Z0, Z1 = Z1)
+  V.optim <- collect.optimx(V.optim, "min")
+  solution.v <- abs(V.optim$par)/sum(abs(V.optim$par))
+  
+  V <- diag(x = as.numeric(solution.v), nrow = dim(X0)[1], ncol = dim(X0)[1])
+  H <- t(X0) %*% V %*% (X0)
+  c <- -1 * c(t(X1) %*% V %*% (X0))
+  A <- t(rep(1, length(c)))
+  b <- 1
+  l <- rep(0, length(c))
+  u <- rep(1, length(c))
+  r <- 0
+  
+  res <- ipop(c = c, H = H, A = A, b = b, l = l, u = u, r = r)
+  solution.w <- as.matrix(primal(res))
+  
+  resultado <- list(solution.v = as.numeric(solution.v), solution.w = solution.w)
+  return(resultado)
+}
+
+```
+
+
+**observação:** ambas as funções foram baseadas em funções já implementadas no pacote `Synth`.
+
+## Exemplo em um conjunto de dados
+
+Carregamos o conjunto de dados `Synth`, originário de Abadie et. al. 2003
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r, echo=TRUE, eval=TRUE}
+library(Synth)
+data(basque)
+glimpse(basque)
+```
+
+
+## Estimando os pesos
+
+Primeiro, preparamos os dados para obtermos $X_1,X_0,Z_1,Z_0$.
+
+```{r, echo=TRUE, eval=TRUE}
+pais <- "Basque Country (Pais Vasco)"
+covariaveis <- c("school.illit", "school.prim", "school.med",
+                 "school.high", "school.post.high", "invest",
+                 "gdpcap", "sec.agriculture", "sec.energy", "sec.industry",
+                 "sec.construction", "sec.services.venta",
+                 "sec.services.nonventa", "popdens")
+T0 <- 1964:1969
+tempo <- 1960:1997
+
+
+data.x1 <- basque[basque$regionname == pais & basque$year %in% T0,]
+X1 <- apply(data.x1[covariaveis], 2, mean, na.rm = T)
+dados <- basque[basque$regionno != 1,]
+df <- data.frame(regionname = unique(dados$regionname))
+
+for (i in covariaveis) {
+  expressao <- paste(i, "regionname", sep = " ~ ")
+  df[i] <- aggregate(as.formula(expressao), 
+                     data=dados[dados$year %in% T0,
+                                c(i, "regionname")],
+                     FUN = mean)[2]
+  
+}
+
+df <- df[-16,]
+colnames(df) <- names(df)
+rownames(df) <- df$regionname
+df <- df[-1]
+X0 <- t(df)
+
+Z1 <- matrix(dados$gdpcap[dados$regionname == pais & 
+                            dados$year %in% tempo], ncol = 1)
+rownames(Z1) <- tempo ; colnames(Z1) <- pais
+
+Z0 <- matrix(dados$gdpcap[!(dados$regionname == pais) & dados$year %in% tempo], ncol = length(unique(dados$regionname)) - 1)
+rownames(Z0) <- tempo ; colnames(Z0) <- c(2:16, 18)
+```
+
+Depois, calculamos $W$ da forma:
+
+```{r, echo=TRUE, eval=TRUE}
+library(kernlab)
+synth.out <- syntetic.control(X0, X1, Z0, Z1)
+synth.out
+```
+
+## Resultado
+```{r,echo=TRUE,eval=TRUE}
+
+dataprep.out <- dataprep(
+  foo = basque,
+  predictors = c("school.illit", "school.prim", "school.med",
+                  "school.high", "school.post.high", "invest"),
+  predictors.op = "mean",
+  time.predictors.prior = 1964:1969,
+  special.predictors = list(
+    list("gdpcap", 1960:1969, "mean"),
+    list("sec.agriculture", seq(1961, 1969, 2), "mean"),
+    list("sec.energy", seq(1961, 1969, 2), "mean"),
+    list("sec.industry", seq(1961, 1969, 2), "mean"),
+    list("sec.construction", seq(1961, 1969, 2), "mean"),
+    list("sec.services.venta", seq(1961, 1969, 2), "mean"),
+    list("sec.services.nonventa", seq(1961, 1969, 2), "mean"),
+    list("popdens", 1969, "mean")),
+  dependent = "gdpcap",
+  unit.variable = "regionno",
+  unit.names.variable = "regionname",
+  time.variable = "year",
+  treatment.identifier = 17,
+  controls.identifier = c(2:16, 18),
+  time.optimize.ssr = 1960:1969,
+  time.plot = 1955:1997)
+
+path.plot(synth.res = synth.out, dataprep.res = dataprep.out,
+          Ylab = "PIB per capita (milhares de dólares, 1986)", Xlab = "Ano",
+          Ylim = c(0, 12), Legend = c("País Basco",
+                                       "País Basco sintético"), Legend.position = "bottomright")
+```
+## Placebo
+
+```{r,echo=TRUE,eval=TRUE}
+
+dataprep.out <- dataprep(
+  foo = basque,
+  predictors = c(
+    "school.illit",
+    "school.prim",
+    "school.med",
+    "school.high",
+    "school.post.high",
+    "invest"
+  ),
+  predictors.op = "mean",
+  time.predictors.prior = 1964:1969,
+  special.predictors = list(
+    list("gdpcap", 1960:1969, "mean"),
+    list("sec.agriculture", seq(1961, 1969, 2), "mean"),
+    list("sec.energy", seq(1961, 1969, 2), "mean"),
+    list("sec.industry", seq(1961, 1969, 2), "mean"),
+    list("sec.construction", seq(1961, 1969, 2), "mean"),
+    list("sec.services.venta", seq(1961, 1969, 2), "mean"),
+    list("sec.services.nonventa", seq(1961, 1969, 2), "mean"),
+    list("popdens", 1969, "mean")
+  ),
+  dependent = "gdpcap",
+  unit.variable = "regionno",
+  unit.names.variable = "regionname",
+  time.variable = "year",
+  treatment.identifier = 10,
+  controls.identifier = c(2:9, 11:16, 18),
+  time.optimize.ssr = 1960:1969,
+  time.plot = 1955:1997
+)
+
+
+plot(
+  dataprep.out$tag$time.plot,
+  dataprep.out$Y1plot,
+  t = "l",
+  col = "black",
+  lwd = 2,
+  ylab = "PIB per capita (milhares de dólares, 1986)",
+  xlab = "Ano",
+  xaxs = "i",
+  yaxs = "i",
+  ylim = c(0, 12),
+  
+)
+lines(
+  dataprep.out$tag$time.plot,
+  dataprep.out$Y0plot %*% synth.out$solution.w[c(2:9,11:16,18)],
+  col = "black",
+  lty = "dashed",
+  lwd = 2,
+  cex = 4 / 5
+)
+
+legend("bottomright", legend = c("Catalunha", "Catalunha sintética"), lty = 1:2, 
+      col = c("black", "black"), lwd = c(2, 2), cex = 6/7)
+```
+
+
+
+
+## Referencias 
+
+- Abadie, A., Diamond, A., & Hainmueller, J. (2010). Synthetic control methods for comparative case studies: Estimating the effect of California’s tobacco control program. Journal of the American statistical Association, 105(490), 493-505.
+
+- Abadie, Alberto, and Javier Gardeazabal. (2003). "The Economic Costs of Conflict: A Case Study of the Basque Country ." American Economic Review, 93 (1): 113–132.
+
+- Roberto Ellery Jr., Antônio Nascimento Jr., Adolfo Sachsida. (2018)."Políticas públicas e usos de evidências no Brasil : conceitos, métodos, contextos e práticas". Políticas públicas : avaliando mais de meio trilhão de reais em gastos públicos, Cap. 12
+
+
+
+
+# Anexo
+
+## Apêndice 
+
+
+- Na  @eq-4 Assuma que $\varepsilon_{it}$ sejam independentes entre $i$ e $t$.
+- Mesmo assim, fatores não-observados $U_{it}=\lambda_{t}\mu_i+\varepsilon_{it}$ podem ser correlacionados entre $i$ e $t$ por conta de $\lambda_t\mu_i$.
+
+- Por conta disso, não se pode estimar por MQO e é preciso eliminar o problema  dos fatores não-observados.
+- Desta forma, é preciso supor que $\varepsilon_{it}$ sejam independentes de $\{ Z_i, U_i\}_{i=1}^{J+1}$.
+
+
+
+- Assuma que $\lambda^{{P}^T} \lambda^P$ seja não-singular
+- Subtraindo a equação multiplicada por $\lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1} \lambda^{{P}^T}$ na @eq-5
+
+<div style="font-size: 60%;">
+\begin{align}
+\left(  Y_{1t}^N - \sum_{j=2}^{J+1} W_jY_{jt}^N \right)-\lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1} \lambda^{{P}^T} \left ( Y_{1}^P\sum_{j=2}^{J+1} W_jY_{j}^P \right)&
+= \left( \theta_t-\lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1} \lambda^{{P}^T}\theta^P \right) \left [ Z_1-\sum_{j=2}^{J+1} W_jZ_j \right ]\\
+&+\left( \lambda_t- \lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1} \lambda^{{P}^T}  \lambda^P \right) \left[ \mu_1-\sum_{j=2}^{J+1} W_j\mu_j \right ]\\
+&+ \sum_{j=2}^{J+1} W_j\left(\varepsilon_{1t}-\varepsilon_{jt} \right )-  \lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1} \lambda^{{P}^T} \left(\varepsilon_1^{P}- \sum_{j=2}^{J+1} W_j \varepsilon_{j}^P\right )
+
+\end{align}
+
+</div>
+
+
+## Modelo 
+
+
+- e por tanto
+
+
+<div style="font-size: 80%;">
+
+\begin{align}
+\left(  Y_{1t}^N - \sum_{j=2}^{J+1} W_jY_{jt}^N \right) &= \lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1} \lambda^{{P}^T} \left ( Y_{1}^P\sum_{j=2}^{J+1} W_jY_{j}^P \right)\\
+
+& +\left( \theta_t-\lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1} \lambda^{{P}^T}\theta^P \right) \left [ Z_1-\sum_{j=2}^{J+1} W_jZ_j \right ]\\
+&+ \sum_{j=2}^{J+1} W_j\left(\varepsilon_{1t}-\varepsilon_{jt} \right )-  \lambda_t \left(\lambda^{{P}^T} \lambda^P \right)^{-1} \lambda^{{P}^T} \left ( \sum_{j=2}^{J+1} W_j\left(\varepsilon_{1}^P-\varepsilon_{j}^P \right )  \right)
+
+\end{align}
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

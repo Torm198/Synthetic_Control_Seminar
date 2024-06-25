@@ -1,0 +1,142 @@
+[
+  {
+    "objectID": "Slide.html#introdução",
+    "href": "Slide.html#introdução",
+    "title": "Controle Sintético",
+    "section": "Introdução",
+    "text": "Introdução\n_ Em muitas situações queremos avaliar o efeito de um acontecimento em unidades de grupos agregados (i.e. cidades, estados, entidades) ao longo do tempo;\n\nCom o métodos de matching é possível avaliar impacto da intervenção comparando com unidades de controle não afetadas;\nSe destaca por precisar apenas de dados agregados, que geralmente são de fácil acesso;\nContudo, a definição do grupo de controle pode ser arbitrária;"
+  },
+  {
+    "objectID": "Slide.html#modelo",
+    "href": "Slide.html#modelo",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\nConta-se \\(J+1\\) Unidades observadas em \\(T\\) periodos.\n\nA primeira unidade sofre intervenção\nDonor pool, potenciais controles, é o conjunto das unidades \\(2\\) a \\(J+1\\)\n\nA intervenção ocorre a partir de \\(T_0\\) tal que \\(1 \\leq T_0\\leq T\\) e seus efeitos podem se propagar de \\(T_0+1\\) a \\(T\\).\n\\(Y_{it}^N:\\) Resultados potenciais da unidade \\(i\\) no período \\(t\\) (sem intervenção)\n\\(Y_{it}^{I}:\\) Resultados potenciais da unidade \\(i\\) nos períodos \\(t\\) posteriores à exposição de \\(i\\) à intervenção.\nA intervenção não afeta \\(Y\\) antes da implementação e os \\(Y\\) não-tratadas não são impactados pela intervenção."
+  },
+  {
+    "objectID": "Slide.html#modelo-1",
+    "href": "Slide.html#modelo-1",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\nSejam:\n\n\\(\\alpha_{it}=Y_{it}^I-Y_{it}^{N}\\) o efeito da intervenção na unidade \\(i\\) em \\(t\\)\n\\(D_{it}=1\\), se \\(i=1\\) e \\(t&gt;T_0\\), e \\(D_{it}=0\\), caso contrário\n\nConsidere que o resultado observado para uma unidade \\(i\\) em \\(t\\) é\n\n\\[Y_{it}=Y_{it}^N + \\alpha_{it}D_{it} \\qquad(1)\\]\n\nNosso objetivo é estimar \\(\\alpha_{1t}=Y_{1t}^I-Y_{1t}^N, \\forall t&gt;T_0\\)"
+  },
+  {
+    "objectID": "Slide.html#modelo-2",
+    "href": "Slide.html#modelo-2",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\nSuponha que a equação de \\(Y_{it}^N\\) seja dada pelo modelo de fatores\n\n\\[Y_{it}^N=\\delta_t+\\theta_t Z_i + \\lambda_t \\mu_i + \\varepsilon_{it} \\qquad(2)\\]\n\n\\(\\delta_t\\): é um fator comum no tempo não observado (comum entre as unidades)\n\\(Z_i\\): é o vetor de covariáveis observadas (não-afeladas pelo tratamento)\n\n\\(\\lambda_t\\): é um vetor de fatores comuns não-observados\n\\(\\mu_i\\): é um vetor de fatores específicos\n\\(\\varepsilon_{it}\\): representa choques transitórios.\n\\(\\lambda_t \\mu_i\\) permite que efeitos fixos variem no tempo (mudanças temporárias), permitindo respostas heterogêneas para fatores não-observados multiplos."
+  },
+  {
+    "objectID": "Slide.html#modelo-3",
+    "href": "Slide.html#modelo-3",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\nConsidere um vetor de pesos \\(W=(W_1,W_2,...,W_{J+1})\\) em que \\(W_j\\geq 0\\), \\(\\forall j\\) e que \\(\\sum_{j=2}^{J+1}W_j=1\\). cada \\(W\\) representa um controle sintético (media ponderada das regiões) e o resultado potencial de cada controle sintético é: \\[\\sum_{j=2}^{J+1} W_jY_{jt}^N=\\delta_t+\\theta_t\\sum_{j=2}^{J+1} W_jZ_j + \\lambda_t\\sum_{j=2}^{J+1} W_j\\mu_j+ \\sum_{j=2}^{J+1} W_j\\varepsilon_{jt} \\qquad(3)\\]\nAssim, tem-se que, subtraindo as equações (para \\(i=1\\)),\n\n\\[\n\\begin{align}\n    Y_{1t}^N-\\sum_{j=2}^{J+1} W_jY_{jt}^N & =\\theta_t \\left [ Z_1-\\sum_{j=2}^{J+1} W_jZ_j \\right ]+ \\lambda_t \\left[ \\mu_1-\\sum_{j=2}^{J+1} W_j\\mu_j \\right ] \\\\\n        & + \\sum_{j=2}^{J+1} W_j\\left(\\varepsilon_{1t}-\\varepsilon_{jt} \\right )\n\\end{align}\n\\qquad(4)\\]"
+  },
+  {
+    "objectID": "Slide.html#modelo-4",
+    "href": "Slide.html#modelo-4",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\ndenotemos por \\(P\\) os siguintes vetores pré-tratamento:\n\n\\(Y_i^P:\\) vetor \\(T_0 \\times 1\\) com o t-ésimo elemento de \\(Y_{it}\\)\n\\(\\varepsilon^P:\\) vetor \\(T_0 \\times 1\\) com o t-ésimo elemento de \\(\\varepsilon_{it}\\)\n\\(\\theta^P:\\) vetor \\(T_0 \\times r\\) com o t-ésima linha \\(\\theta_t\\)\n\\(\\lambda^P:\\) vetor \\(T_0 \\times f\\) com o t-ésima linha \\(\\lambda_t\\)\n\nObtemos da equação aplicada ao período pre-tratamento\n\n\\[\n\\begin{align}\n   Y_{1}^P-\\sum_{j=2}^{J+1} W_jY_{j}^P & =\\theta^P \\left [ Z_1-\\sum_{j=2}^{J+1} W_jZ_j \\right ]+ \\lambda^P \\left[ \\mu_1-\\sum_{j=2}^{J+1} W_j\\mu_j \\right ] \\\\\n        & + \\left(\\varepsilon_1^{P}- \\sum_{j=2}^{J+1} W_j \\varepsilon_{j}^P\\right )\n\\end{align}\n\\qquad(5)\\]"
+  },
+  {
+    "objectID": "Slide.html#modelo-5",
+    "href": "Slide.html#modelo-5",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\nSuponha agora que exista \\(W^*=(W_1^*,W_2^*,...,W_{J+1}^*)\\) tal que\n\n\n\\[\\begin{align}\n\\sum_{j=2}^{J+1}W_j^* Y_{j1}&=Y_{11}\\\\\n\\sum_{j=2}^{J+1}W_j^* Y_{j2}&=Y_{12}\\\\\n.&\\\\\n.&\\\\\n.&\\\\\n\\sum_{j=2}^{J+1}W_j^* Y_{jT_0}&=Y_{1T_0}\\\\\n\\sum_{j=2}^{J+1}W_j^* Z_{j}&=Z_{1}\\\\\n\n\\end{align}\\]"
+  },
+  {
+    "objectID": "Slide.html#modelo-6",
+    "href": "Slide.html#modelo-6",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\nAssim, o ajuste do contrafactual pode ser reduzido a\n\n\\[Y_{1j}^N-\\sum W_j^* Y_{jt}^N=R_{1t}+R_{2t}+R_{3t}\\]\n\nOnde\n\n\n\\[\\begin{align}\nR_{1t}&= \\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1}\\\\\nR_{2t}&= -\\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1} \\lambda^{{P}^T}  \\varepsilon_1^P\\\\\nR_{1t}&= \\left( \\varepsilon_1^P-\\sum_{j=2}^{J+2} W_j \\varepsilon_j^P \\right)\\\\\n\\end{align}\\]"
+  },
+  {
+    "objectID": "Slide.html#modelo-7",
+    "href": "Slide.html#modelo-7",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\nConsidere que \\(E(R_{2t})=E(R_{3t})=0, \\forall t &gt; T_0\\)\nE para \\(R_{1t}\\) mostra-se que:\n\n\n\\[\nE|R_{1t}| \\leq C(p)^{\\frac{1}{p}}\\left( \\frac{\\bar{\\lambda}^2F}{\\xi}\\right)J^{\\frac{1}{p}}max \\left\\{ \\frac{(\\bar{m}_p)^{\\frac{1}{p}}}{T_0^{1-\\frac{1}{p}}},\\frac{\\bar{\\sigma}}{\\sqrt{T_0}}  \\right\\}\n\\qquad(6)\\]\n\n\nem que\n\n\\(C(p)\\) é o p-ésimo momento central de \\((X-1)\\), sendo \\(X \\sim Poisson(1)\\)\n\\(\\left( \\frac{\\bar{\\lambda}^2F}{\\xi}\\right)\\) é o limite inferior dos autovalores de \\(\\frac{1}{M}\\sum \\lambda_t^T \\lambda_t\\)\n\\(\\bar{m}_p\\) é a média do p-ésimo momento de \\(\\varepsilon_{jt}\\)\n\\(\\bar{\\sigma}\\) é o \\(max(\\sigma_j^2)\\), em que \\(\\sigma_j^2=E|\\varepsilon_{jt}|^2\\).\npara mais detalhes ver Appendix B de Alberto et. al. 2010"
+  },
+  {
+    "objectID": "Slide.html#modelo-8",
+    "href": "Slide.html#modelo-8",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\nA Equation 6 implica que o viés do estimador \\(E(R_{1t})\\) pode ser limitado por uma função que vai para zero à medida que o número de períodos (\\(T_0\\)) de pré-tratamento aumenta.\nConforme \\(T_0\\) cresce, o matching nos resultados pré-intervenção ajuda a controlar fatores não-observados e a heterogeneidade dos efeitos observados sobre \\(Y\\).\nAs unidades parecidas nos determinantes observados e não observados de \\(Y\\) devem produzir trajetórias similares às de \\(Y\\) em instantes posteriores a \\(T_0\\). A diferença entre as trajetórias em \\(t&gt; T_0\\) é efeito da intervenção\n\n\\[\\hat{\\alpha_{1t}}=Y_{1t}-\\sum_{j+2}^{J+1}W_j^* Y_{jt} ~ t \\in \\{ T_0+1, T_0+2,...,T\\}\\]"
+  },
+  {
+    "objectID": "Slide.html#modelo-9",
+    "href": "Slide.html#modelo-9",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\nAs condições para \\(W*\\) esablecidas valem na igualdade se \\((Y_{11}, Y_{12},...,Y_{1T_0}, Z_1^T)\\)\npertence ao cone convexo gerado por \\({(Y_{21}, Y_{22},...,Y_{2T_0}, Z_2^T),..., (Y_{(J+1)1},(Y_{(J+1)2},...,Y_{(J+1)T_0}, Z_{(J+1)}^T)}\\)\nO suporte deve ser parecido\n\\(W^*\\) satisfaz as condições aproximadamente\nviés de interpolação entre regiões com características diferentes"
+  },
+  {
+    "objectID": "Slide.html#implementação-das-funções",
+    "href": "Slide.html#implementação-das-funções",
+    "title": "Controle Sintético",
+    "section": "Implementação das funções",
+    "text": "Implementação das funções\nBusca-se \\(W^*\\) que minimize \\(\\lVert X_1 - X_0W \\rVert\\). Para isso, minimizamos a função:\n\\[\\lVert X_1 - X_0W \\rVert = \\sqrt{(X_1 - X_0W)'V(X_1 - X_0W)}\\]\nA matriz simétrica e semipositiva definida \\(V\\) é encontrada de forma a minimizar:\n\\[\narg min_{V\\in\\mathcal{V}}(Z_1 - Z_0W^*(V))'(Z_1 - Z_0W^*(V))\n\\] onde \\(\\mathcal{V}\\) é o conjunto com todas as matrizes diagonais positivas definidas. ()"
+  },
+  {
+    "objectID": "Slide.html#implementação-das-funções-1",
+    "href": "Slide.html#implementação-das-funções-1",
+    "title": "Controle Sintético",
+    "section": "Implementação das funções",
+    "text": "Implementação das funções\nA função para obtenção de \\(V\\) é dada por:\n\n\nCode\nfunc.V &lt;- function(SV1, X0, X1, Z0, Z1) {\n  V &lt;- diag(x = as.numeric(abs(SV1)/sum(abs(SV1))), \n            nrow = length(SV1), ncol = length(SV1))\n  H &lt;- t(X0) %*% V %*% X0\n  c &lt;- -1 * c(t(X1) %*% V %*% X0)\n  A &lt;- t(rep(1, length(c)))\n  b &lt;- 1\n  l &lt;- rep(0, length(c))\n  u &lt;- rep(1, length(c))\n  r &lt;- 0\n  \n  res &lt;- ipop(c = c, H = H, A = A, b = b, l = l, u = u, r = r)\n  W &lt;- as.matrix(primal(res))\n  sol.V &lt;- as.numeric(t(Z1 - Z0 %*% W) %*% (Z1 - Z0 %*% W))\n  return(sol.V)\n}\n\n\nE a função para obtenção dos controles sintéticos é dada por\n\n\nCode\nsyntetic.control &lt;- function(X0, X1, Z0, Z1) {\n  big.dataframe &lt;- cbind(X0, X1)\n  divisor &lt;- sqrt(apply(big.dataframe, 1, var))\n  scaled.matrix &lt;- t(t(big.dataframe) %*% \n                       (1/(divisor) * diag(rep(dim(big.dataframe)[1], 1))))\n  X0 &lt;- scaled.matrix[, c(1:(dim(X0)[2]))]\n  X1 &lt;- scaled.matrix[, dim(scaled.matrix)[2]]\n  SV1 &lt;- rep(1/dim(X0)[1], dim(X0)[1])\n  V.optim &lt;- optimx::optimx(par = SV1, fn = func.V,\n                            X0 = X0, X1 = X1, Z0 = Z0, Z1 = Z1)\n  V.optim &lt;- collect.optimx(V.optim, \"min\")\n  solution.v &lt;- abs(V.optim$par)/sum(abs(V.optim$par))\n  \n  V &lt;- diag(x = as.numeric(solution.v), nrow = dim(X0)[1], ncol = dim(X0)[1])\n  H &lt;- t(X0) %*% V %*% (X0)\n  c &lt;- -1 * c(t(X1) %*% V %*% (X0))\n  A &lt;- t(rep(1, length(c)))\n  b &lt;- 1\n  l &lt;- rep(0, length(c))\n  u &lt;- rep(1, length(c))\n  r &lt;- 0\n  \n  res &lt;- ipop(c = c, H = H, A = A, b = b, l = l, u = u, r = r)\n  solution.w &lt;- as.matrix(primal(res))\n  \n  resultado &lt;- list(solution.v = as.numeric(solution.v), solution.w = solution.w)\n  return(resultado)\n}\n\n\nobservação: ambas as funções foram baseadas em funções já implementadas no pacote Synth."
+  },
+  {
+    "objectID": "Slide.html#exemplo-em-um-conjunto-de-dados",
+    "href": "Slide.html#exemplo-em-um-conjunto-de-dados",
+    "title": "Controle Sintético",
+    "section": "Exemplo em um conjunto de dados",
+    "text": "Exemplo em um conjunto de dados\nCarregamos o conjunto de dados Synth, originário de Abadie et. al. 2003\n\n\nCode\nlibrary(Synth)\ndata(basque)\nglimpse(basque)\n\n\nRows: 774\nColumns: 17\n$ regionno              &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …\n$ regionname            &lt;chr&gt; \"Spain (Espana)\", \"Spain (Espana)\", \"Spain (Espa…\n$ year                  &lt;dbl&gt; 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, …\n$ gdpcap                &lt;dbl&gt; 2.354542, 2.480149, 2.603613, 2.637104, 2.669880…\n$ sec.agriculture       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 19.54, NA, 19.05, NA, 16…\n$ sec.energy            &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 4.71, NA, 4.31, NA, 4.31…\n$ sec.industry          &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 26.42, NA, 26.05, NA, 27…\n$ sec.construction      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 6.27, NA, 6.83, NA, 7.64…\n$ sec.services.venta    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 36.62, NA, 38.00, NA, 38…\n$ sec.services.nonventa &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 6.44, NA, 5.77, NA, 6.48…\n$ school.illit          &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 2863.278, 28…\n$ school.prim           &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 18679.10, 18…\n$ school.med            &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 1064.246, 11…\n$ school.high           &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 359.7457, 37…\n$ school.post.high      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 212.1434, 21…\n$ popdens               &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …\n$ invest                &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, 18.36018, 20…"
+  },
+  {
+    "objectID": "Slide.html#estimando-os-pesos",
+    "href": "Slide.html#estimando-os-pesos",
+    "title": "Controle Sintético",
+    "section": "Estimando os pesos",
+    "text": "Estimando os pesos\nPrimeiro, preparamos os dados para obtermos \\(X_1,X_0,Z_1,Z_0\\).\n\n\nCode\npais &lt;- \"Basque Country (Pais Vasco)\"\ncovariaveis &lt;- c(\"school.illit\", \"school.prim\", \"school.med\",\n                 \"school.high\", \"school.post.high\", \"invest\",\n                 \"gdpcap\", \"sec.agriculture\", \"sec.energy\", \"sec.industry\",\n                 \"sec.construction\", \"sec.services.venta\",\n                 \"sec.services.nonventa\", \"popdens\")\nT0 &lt;- 1964:1969\ntempo &lt;- 1960:1997\n\n\ndata.x1 &lt;- basque[basque$regionname == pais & basque$year %in% T0,]\nX1 &lt;- apply(data.x1[covariaveis], 2, mean, na.rm = T)\ndados &lt;- basque[basque$regionno != 1,]\ndf &lt;- data.frame(regionname = unique(dados$regionname))\n\nfor (i in covariaveis) {\n  expressao &lt;- paste(i, \"regionname\", sep = \" ~ \")\n  df[i] &lt;- aggregate(as.formula(expressao), \n                     data=dados[dados$year %in% T0,\n                                c(i, \"regionname\")],\n                     FUN = mean)[2]\n  \n}\n\ndf &lt;- df[-16,]\ncolnames(df) &lt;- names(df)\nrownames(df) &lt;- df$regionname\ndf &lt;- df[-1]\nX0 &lt;- t(df)\n\nZ1 &lt;- matrix(dados$gdpcap[dados$regionname == pais & \n                            dados$year %in% tempo], ncol = 1)\nrownames(Z1) &lt;- tempo ; colnames(Z1) &lt;- pais\n\nZ0 &lt;- matrix(dados$gdpcap[!(dados$regionname == pais) & dados$year %in% tempo], ncol = length(unique(dados$regionname)) - 1)\nrownames(Z0) &lt;- tempo ; colnames(Z0) &lt;- c(2:16, 18)\n\n\nDepois, calculamos \\(W\\) da forma:\n\n\nCode\nlibrary(kernlab)\nsynth.out &lt;- syntetic.control(X0, X1, Z0, Z1)\nsynth.out\n\n\n$solution.v\n [1] 6.762763e-02 9.367840e-02 1.756102e-02 5.683544e-02 7.808675e-02\n [6] 3.522110e-01 1.127614e-02 1.810755e-04 8.816527e-02 6.537826e-05\n[11] 1.003965e-01 9.710417e-02 2.531460e-02 1.149661e-02\n\n$solution.w\n              [,1]\n [1,] 7.957523e-05\n [2,] 1.224675e-04\n [3,] 9.935210e-05\n [4,] 9.967353e-01\n [5,] 8.578474e-05\n [6,] 1.311373e-03\n [7,] 1.303419e-04\n [8,] 1.351296e-04\n [9,] 3.644127e-04\n[10,] 1.868836e-04\n[11,] 8.486251e-05\n[12,] 1.264534e-04\n[13,] 9.960381e-05\n[14,] 1.267570e-04\n[15,] 1.396864e-04\n[16,] 1.720640e-04"
+  },
+  {
+    "objectID": "Slide.html#resultado",
+    "href": "Slide.html#resultado",
+    "title": "Controle Sintético",
+    "section": "Resultado",
+    "text": "Resultado\n\n\nCode\ndataprep.out &lt;- dataprep(\n  foo = basque,\n  predictors = c(\"school.illit\", \"school.prim\", \"school.med\",\n                  \"school.high\", \"school.post.high\", \"invest\"),\n  predictors.op = \"mean\",\n  time.predictors.prior = 1964:1969,\n  special.predictors = list(\n    list(\"gdpcap\", 1960:1969, \"mean\"),\n    list(\"sec.agriculture\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.energy\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.industry\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.construction\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.services.venta\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.services.nonventa\", seq(1961, 1969, 2), \"mean\"),\n    list(\"popdens\", 1969, \"mean\")),\n  dependent = \"gdpcap\",\n  unit.variable = \"regionno\",\n  unit.names.variable = \"regionname\",\n  time.variable = \"year\",\n  treatment.identifier = 17,\n  controls.identifier = c(2:16, 18),\n  time.optimize.ssr = 1960:1969,\n  time.plot = 1955:1997)\n\npath.plot(synth.res = synth.out, dataprep.res = dataprep.out,\n          Ylab = \"PIB per capita (milhares de dólares, 1986)\", Xlab = \"Ano\",\n          Ylim = c(0, 12), Legend = c(\"País Basco\",\n                                       \"País Basco sintético\"), Legend.position = \"bottomright\")"
+  },
+  {
+    "objectID": "Slide.html#placebo",
+    "href": "Slide.html#placebo",
+    "title": "Controle Sintético",
+    "section": "Placebo",
+    "text": "Placebo\n\n\nCode\ndataprep.out &lt;- dataprep(\n  foo = basque,\n  predictors = c(\n    \"school.illit\",\n    \"school.prim\",\n    \"school.med\",\n    \"school.high\",\n    \"school.post.high\",\n    \"invest\"\n  ),\n  predictors.op = \"mean\",\n  time.predictors.prior = 1964:1969,\n  special.predictors = list(\n    list(\"gdpcap\", 1960:1969, \"mean\"),\n    list(\"sec.agriculture\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.energy\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.industry\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.construction\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.services.venta\", seq(1961, 1969, 2), \"mean\"),\n    list(\"sec.services.nonventa\", seq(1961, 1969, 2), \"mean\"),\n    list(\"popdens\", 1969, \"mean\")\n  ),\n  dependent = \"gdpcap\",\n  unit.variable = \"regionno\",\n  unit.names.variable = \"regionname\",\n  time.variable = \"year\",\n  treatment.identifier = 10,\n  controls.identifier = c(2:9, 11:16, 18),\n  time.optimize.ssr = 1960:1969,\n  time.plot = 1955:1997\n)\n\n\nplot(\n  dataprep.out$tag$time.plot,\n  dataprep.out$Y1plot,\n  t = \"l\",\n  col = \"black\",\n  lwd = 2,\n  ylab = \"PIB per capita (milhares de dólares, 1986)\",\n  xlab = \"Ano\",\n  xaxs = \"i\",\n  yaxs = \"i\",\n  ylim = c(0, 12),\n  \n)\nlines(\n  dataprep.out$tag$time.plot,\n  dataprep.out$Y0plot %*% synth.out$solution.w[c(2:9,11:16,18)],\n  col = \"black\",\n  lty = \"dashed\",\n  lwd = 2,\n  cex = 4 / 5\n)\n\nlegend(\"bottomright\", legend = c(\"Catalunha\", \"Catalunha sintética\"), lty = 1:2, \n      col = c(\"black\", \"black\"), lwd = c(2, 2), cex = 6/7)"
+  },
+  {
+    "objectID": "Slide.html#referencias",
+    "href": "Slide.html#referencias",
+    "title": "Controle Sintético",
+    "section": "Referencias",
+    "text": "Referencias\n\nAbadie, A., Diamond, A., & Hainmueller, J. (2010). Synthetic control methods for comparative case studies: Estimating the effect of California’s tobacco control program. Journal of the American statistical Association, 105(490), 493-505.\nAbadie, Alberto, and Javier Gardeazabal. (2003). “The Economic Costs of Conflict: A Case Study of the Basque Country .” American Economic Review, 93 (1): 113–132.\nRoberto Ellery Jr., Antônio Nascimento Jr., Adolfo Sachsida. (2018).”Políticas públicas e usos de evidências no Brasil : conceitos, métodos, contextos e práticas”. Políticas públicas : avaliando mais de meio trilhão de reais em gastos públicos, Cap. 12"
+  },
+  {
+    "objectID": "Slide.html#apêndice",
+    "href": "Slide.html#apêndice",
+    "title": "Controle Sintético",
+    "section": "Apêndice",
+    "text": "Apêndice\n\nNa Equation 4 Assuma que \\(\\varepsilon_{it}\\) sejam independentes entre \\(i\\) e \\(t\\).\nMesmo assim, fatores não-observados \\(U_{it}=\\lambda_{t}\\mu_i+\\varepsilon_{it}\\) podem ser correlacionados entre \\(i\\) e \\(t\\) por conta de \\(\\lambda_t\\mu_i\\).\nPor conta disso, não se pode estimar por MQO e é preciso eliminar o problema dos fatores não-observados.\nDesta forma, é preciso supor que \\(\\varepsilon_{it}\\) sejam independentes de \\(\\{ Z_i, U_i\\}_{i=1}^{J+1}\\).\nAssuma que \\(\\lambda^{{P}^T} \\lambda^P\\) seja não-singular\nSubtraindo a equação multiplicada por \\(\\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1} \\lambda^{{P}^T}\\) na Equation 5\n\n\n\\[\\begin{align}\n\\left(  Y_{1t}^N - \\sum_{j=2}^{J+1} W_jY_{jt}^N \\right)-\\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1} \\lambda^{{P}^T} \\left ( Y_{1}^P\\sum_{j=2}^{J+1} W_jY_{j}^P \\right)&\n= \\left( \\theta_t-\\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1} \\lambda^{{P}^T}\\theta^P \\right) \\left [ Z_1-\\sum_{j=2}^{J+1} W_jZ_j \\right ]\\\\\n&+\\left( \\lambda_t- \\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1} \\lambda^{{P}^T}  \\lambda^P \\right) \\left[ \\mu_1-\\sum_{j=2}^{J+1} W_j\\mu_j \\right ]\\\\\n&+ \\sum_{j=2}^{J+1} W_j\\left(\\varepsilon_{1t}-\\varepsilon_{jt} \\right )-  \\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1} \\lambda^{{P}^T} \\left(\\varepsilon_1^{P}- \\sum_{j=2}^{J+1} W_j \\varepsilon_{j}^P\\right )\n\n\\end{align}\\]"
+  },
+  {
+    "objectID": "Slide.html#modelo-10",
+    "href": "Slide.html#modelo-10",
+    "title": "Controle Sintético",
+    "section": "Modelo",
+    "text": "Modelo\n\ne por tanto\n\n\n\\[\\begin{align}\n\\left(  Y_{1t}^N - \\sum_{j=2}^{J+1} W_jY_{jt}^N \\right) &= \\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1} \\lambda^{{P}^T} \\left ( Y_{1}^P\\sum_{j=2}^{J+1} W_jY_{j}^P \\right)\\\\\n\n& +\\left( \\theta_t-\\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1} \\lambda^{{P}^T}\\theta^P \\right) \\left [ Z_1-\\sum_{j=2}^{J+1} W_jZ_j \\right ]\\\\\n&+ \\sum_{j=2}^{J+1} W_j\\left(\\varepsilon_{1t}-\\varepsilon_{jt} \\right )-  \\lambda_t \\left(\\lambda^{{P}^T} \\lambda^P \\right)^{-1} \\lambda^{{P}^T} \\left ( \\sum_{j=2}^{J+1} W_j\\left(\\varepsilon_{1}^P-\\varepsilon_{j}^P \\right )  \\right)\n\n\\end{align}\\]\n\n\n\n\n\nME920/MI628 - Inferência Causal"
+  }
+]
